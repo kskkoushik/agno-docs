@@ -1,1 +1,50 @@
-dummy content =====> align this empty doc with code
+# BrowserbaseTools
+
+This document provides details for the BrowserbaseTools module, a toolkit that integrates with the Browserbase API and automates browser operations using Playwright.
+
+## Overview
+
+BrowserbaseTools is designed to interact with a Browserbase client instance to perform web navigation, capture screenshots, fetch page content, and manage browser sessions. The module ensures that essential environment variables are provided:
+
+- BROWSERBASE_API_KEY
+- BROWSERBASE_PROJECT_ID
+
+An optional BROWSERBASE_BASE_URL can be used for specifying a custom API endpoint, which is useful for self-hosted instances or connecting to different regions.
+
+## Prerequisites
+
+Before using BrowserbaseTools, make sure you have installed the required packages:
+
+- browserbase: `pip install browserbase`
+- playwright: `pip install playwright` (followed by `playwright install` to setup necessary browser binaries)
+
+## Key Methods
+
+### 1. navigate_to(url, connect_url=None)
+
+- Navigates the browser to the specified URL.
+- Optionally accepts a connect URL from an existing session.
+- Returns a JSON string containing the navigation status, page title, and URL.
+
+### 2. screenshot(path, full_page=True, connect_url=None)
+
+- Captures a screenshot of the current page and saves it to the given path.
+- `full_page` indicates whether to capture the complete page.
+- Returns a JSON string confirming the operation.
+
+### 3. get_page_content(connect_url=None)
+
+- Retrieves the HTML content of the current browser page.
+
+### 4. close_session()
+
+- Cleans up browser resources and closes the session.
+- Returns a JSON string with the closure status and a message confirming cleanup.
+
+## Internal Operations
+
+- _ensure_session: Ensures that a browser session exists, creating a new one if necessary.
+- _initialize_browser: Initializes the browser instance using Playwright based on the current session's connection URL.
+- _cleanup: Releases browser resources by closing the browser and stopping Playwright.
+
+This documentation has been updated to align with the recent modifications in the codebase, ensuring that users have a clear understanding of the BrowserbaseTools functionalities.
