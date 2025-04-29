@@ -1,1 +1,40 @@
-dummy content =====> align this empty doc with code
+# Browserbase Tools Documentation
+
+This document provides an overview of the BrowserbaseTools class, which integrates with the Browserbase service and Playwright for browser automation. The class is designed to manage browser sessions, navigate web pages, capture screenshots, and retrieve page content.
+
+## Overview
+
+The BrowserbaseTools class does the following:
+
+- Initializes a connection to Browserbase using an API key and project ID provided via parameters or environment variables (BROWSERBASE_API_KEY, BROWSERBASE_PROJECT_ID). Optionally, a custom API endpoint (BROWSERBASE_BASE_URL) can be used.
+- Manages browser sessions by creating, initializing, and cleaning up sessions using Playwright.
+- Provides key methods that can be registered and executed for browser interactions.
+
+## Key Methods
+
+- **navigate_to(url: str, connect_url: Optional[str] = None) -> str**
+  - Navigates to the provided URL using the browser page and returns a JSON string containing the navigation status, title, and URL.
+
+- **screenshot(path: str, full_page: bool = True, connect_url: Optional[str] = None) -> str**
+  - Captures a screenshot of the current page and saves it to the specified path. Returns a JSON confirmation of the action.
+
+- **get_page_content(connect_url: Optional[str] = None) -> str**
+  - Retrieves the HTML content of the current page.
+
+- **close_session() -> str**
+  - Closes the current browser session, cleans up browser resources, and resets session state. Returns a JSON string confirming the session closure.
+
+## Setup and Usage
+
+1. Ensure that the following dependencies are installed:
+   - browserbase (install via `pip install browserbase`)
+   - playwright (install via `pip install playwright` and then run `playwright install`)
+
+2. Set up the necessary environment variables or pass the parameters directly when instantiating the BrowserbaseTools:
+   - BROWSERBASE_API_KEY
+   - BROWSERBASE_PROJECT_ID
+   - (Optional) BROWSERBASE_BASE_URL
+
+3. Instantiate the BrowserbaseTools in your project and use the registered methods for browser automation tasks.
+
+This documentation is aligned with the current implementation of the BrowserbaseTools class to ensure clarity on its usage and functionality.
