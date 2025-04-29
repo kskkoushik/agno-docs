@@ -1,1 +1,65 @@
-dummy content =====> align this empty doc with code
+# Browserbase Tools Documentation
+
+This document describes the functionality provided by the BrowserbaseTools class which integrates with the Browserbase API and leverages Playwright for browser automation.
+
+## Initialization
+
+To create an instance of BrowserbaseTools, you must provide the following parameters or set the corresponding environment variables:
+
+- **api_key**: Browserbase API key. Must be provided either as an argument or via the environment variable `BROWSERBASE_API_KEY`.
+- **project_id**: Browserbase project ID. Must be provided either as an argument or via the environment variable `BROWSERBASE_PROJECT_ID`.
+- **base_url** (optional): Custom Browserbase API endpoint URL. Set via an argument or the `BROWSERBASE_BASE_URL` environment variable if using a self-hosted instance or connecting to a different region.
+
+Example:
+
+```python
+from agno.tools.browserbase import BrowserbaseTools
+
+browser = BrowserbaseTools(
+    api_key='YOUR_API_KEY',
+    project_id='YOUR_PROJECT_ID',
+    base_url='YOUR_CUSTOM_URL'  # optional
+)
+```
+
+## Available Methods
+
+### navigate_to(url: str, connect_url: Optional[str] = None) -> str
+
+Navigates the browser to a specified URL. This method initializes the browser (if not already done) and opens the target URL, waiting until network activity is idle. It returns a JSON string that includes:
+
+- **status**: Navigation status (typically `complete`).
+- **title**: The title of the loaded page.
+- **url**: The URL that was navigated to.
+
+### screenshot(path: str, full_page: bool = True, connect_url: Optional[str] = None) -> str
+
+Captures a screenshot of the current page.
+
+- **path**: File path where the screenshot will be saved.
+- **full_page**: Boolean flag indicating whether to capture the entire page.
+
+The method returns a JSON string confirming the status of the screenshot along with the path to the saved file.
+
+### get_page_content(connect_url: Optional[str] = None) -> str
+
+Retrieves the HTML content of the current page. If the page is not already loaded, the method will initialize the browser before fetching the content.
+
+### close_session() -> str
+
+Cleans up and closes the current browser session. This method performs two key actions:
+
+1. Cleans up local browser resources.
+2. Resets the session state.
+
+It returns a JSON string indicating that the session has been closed and the browser resources have been cleaned up.
+
+## Internal Workflow and Error Handling
+
+- **Session Management**: The `_ensure_session` and `_create_session` methods are responsible for initializing a new browser session if one is not already active. The session provides a connection URL for browser communication.
+
+- **Browser Initialization**: The `_initialize_browser` method uses Playwright to start a browser instance and connect to it via CDP (Chrome DevTools Protocol), utilizing the session's connection URL.
+
+- **Resource Cleanup**: The `_cleanup` method is used to properly close the browser and stop Playwright when errors occur or when the session is closed.
+
+- **Error Handling**: In case of errors (e.g., failure to navigate, capture a screenshot, or retrieve page content), the methods clean up resources and propagate the exception.
