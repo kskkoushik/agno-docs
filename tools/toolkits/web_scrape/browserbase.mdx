@@ -1,1 +1,56 @@
-dummy content =====> align this empty doc with code
+# BrowserbaseTools Documentation
+
+This document provides an overview and usage guidelines for the BrowserbaseTools class. It is designed to manage browser sessions using Browserbase and Playwright, and offers methods to navigate, take screenshots, retrieve page content, and close sessions.
+
+## Overview
+
+The BrowserbaseTools class performs the following functions:
+
+- Initializes the Browserbase client with an optional custom API endpoint (BROWSERBASE_BASE_URL).
+- Enforces the requirement of API key and project ID (BROWSERBASE_API_KEY and BROWSERBASE_PROJECT_ID).
+- Manages browser sessions and connections using Playwright's synchronous API.
+
+## Initialization
+
+To create an instance, provide your API key and project ID either as parameters or via the corresponding environment variables. An optional base URL may be provided for custom Browserbase endpoints.
+
+Example:
+
+```python
+from agno.tools.browserbase import BrowserbaseTools
+
+browser_tools = BrowserbaseTools(api_key='YOUR_API_KEY', project_id='YOUR_PROJECT_ID')
+```
+
+## Methods
+
+### navigate_to(url: str, connect_url: Optional[str] = None) -> str
+
+Navigates the browser to the specified URL. If a connection URL is provided or available from a session, it will be used to initialize the browser.
+
+Returns a JSON string with the navigation status, including the page title and URL.
+
+### screenshot(path: str, full_page: bool = True, connect_url: Optional[str] = None) -> str
+
+Captures a screenshot of the current page. You can customize the screenshot behavior using the `full_page` parameter. The resulting JSON confirms the screenshot was saved to the specified path.
+
+### get_page_content(connect_url: Optional[str] = None) -> str
+
+Retrieves the HTML content of the current page. Returns the page content as a string.
+
+### close_session() -> str
+
+Cleans up browser resources, closes the active browser session, and resets session state. Returns a JSON string indicating that the session was closed successfully.
+
+## Error Handling and Cleanup
+
+- Each method is designed to handle exceptions by cleaning up browser resources if an error occurs.
+- It is important to call `close_session` to safely release resources after operations are complete.
+
+## Prerequisites
+
+- Ensure that the following packages are installed:
+  - browserbase (install using `pip install browserbase`)
+  - playwright (install using `pip install playwright` and run `playwright install`)
+
+For detailed integration, review the implementation in the BrowserbaseTools class located in the source file.
