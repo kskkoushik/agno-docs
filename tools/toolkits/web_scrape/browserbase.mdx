@@ -1,1 +1,85 @@
-dummy content =====> align this empty doc with code
+# Browserbase Tools Documentation
+
+This document provides an overview and usage guide for the `BrowserbaseTools` class, a toolkit for interacting with the Browserbase API and performing browser automation tasks using Playwright.
+
+## Prerequisites
+
+Before using `BrowserbaseTools`, ensure you have:
+
+- Set the environment variables:
+  - `BROWSERBASE_API_KEY`: Your Browserbase API key.
+  - `BROWSERBASE_PROJECT_ID`: Your Browserbase project ID.
+  - (Optional) `BROWSERBASE_BASE_URL`: Custom API endpoint if using a self-hosted or region-specific instance.
+
+- Installed dependencies:
+  - `browserbase` (install via `pip install browserbase`)
+  - `playwright` (install via `pip install playwright` and run `playwright install`)
+
+## Usage Overview
+
+The `BrowserbaseTools` class encapsulates browser automation routines. Below is a brief description of its primary methods and their uses:
+
+### Initialization
+
+Create an instance by passing your API key and project ID (or ensure they are set as environment variables):
+
+```python
+from agno.tools.browserbase import BrowserbaseTools
+
+browser_tools = BrowserbaseTools(api_key='your_api_key', project_id='your_project_id')
+```
+
+The toolkit will automatically use a custom API endpoint if the `BROWSERBASE_BASE_URL` is provided.
+
+### Navigating to a URL
+
+- Method: `navigate_to(url: str, connect_url: Optional[str] = None) -> str`
+- Description: Opens the provided URL in the browser session.
+
+Example:
+
+```python
+response = browser_tools.navigate_to('https://example.com')
+print(response)  # JSON string with navigation status and page title
+```
+
+### Taking a Screenshot
+
+- Method: `screenshot(path: str, full_page: bool = True, connect_url: Optional[str] = None) -> str`
+- Description: Captures a screenshot of the current page. The `full_page` parameter decides if the entire page should be captured.
+
+Example:
+
+```python
+response = browser_tools.screenshot(path='screenshot.png')
+print(response)  # JSON string confirming screenshot was saved
+```
+
+### Retrieving Page Content
+
+- Method: `get_page_content(connect_url: Optional[str] = None) -> str`
+- Description: Retrieves the HTML content of the current browser page.
+
+Example:
+
+```python
+html = browser_tools.get_page_content()
+print(html)  # Outputs the page HTML content as a string
+```
+
+### Closing the Session
+
+- Method: `close_session() -> str`
+- Description: Cleans up browser resources and closes the session.
+
+Example:
+
+```python
+response = browser_tools.close_session()
+print(response)  # JSON string indicating that the session has been closed
+```
+
+## Additional Notes
+
+- The toolkit lazily initializes browser sessions and ensures that a new session is automatically created if one does not exist.
+- In the event of an error during navigation or screenshot operations, the toolkit will perform necessary cleanup to free up resources.
